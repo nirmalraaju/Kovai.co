@@ -1,46 +1,190 @@
-⚙️ Setup & InstallationPrerequisitesNode.js installed.A Supabase account and project.1. Database SetupRun the following SQL in your Supabase SQL Editor to prepare the environment:SQLcreate table tickets (
+# 🚀 Task Management App
+
+A full-stack Task Management application built with **React (Vite)**, **Express.js**, and **Supabase**. Users can authenticate with Google, create tasks, view their personal task list, and update task status through a clean and intuitive interface.
+
+---
+
+## ✨ Features
+
+- 🔐 Google Authentication with Supabase Auth
+- ➕ Create new tasks
+- 📋 View all tasks for the logged-in user
+- 🔄 Update task status
+- 🗂️ Task states:
+  - Planned
+  - In Progress
+  - Completed
+- ☁️ Secure backend API with Express.js
+- 🛡️ Row Level Security (RLS) in Supabase
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- React (Vite)
+- JavaScript (ES6+)
+- CSS
+
+### Backend
+- Node.js
+- Express.js
+- Supabase JavaScript Client
+- dotenv
+- cors
+
+### Database & Authentication
+- Supabase PostgreSQL
+- Supabase Auth (Google OAuth)
+
+---
+
+## 📁 Project Structure
+
+```text
+TASK-MANAGER/
+│
+├── backend/
+│   ├── config/
+│   │   └── supabaseClient.js
+│   ├── controllers/
+│   │   └── taskController.js
+│   ├── routes/
+│   │   └── taskRoutes.js
+│   ├── .env
+│   ├── package.json
+│   └── server.js
+│
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── api/
+│   │   │   └── axios.js
+│   │   ├── components/
+│   │   │   ├── TaskCard.jsx
+│   │   │   ├── TaskForm.jsx
+│   │   │   └── Navbar.jsx
+│   │   ├── pages/
+│   │   │   └── Dashboard.jsx
+│   │   ├── supabaseClient.js
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   └── index.css
+│   ├── .env
+│   ├── package.json
+│   └── vite.config.js
+│
+├── .gitignore
+└── README.md
+🗄️ Database Setup (Supabase)
+
+Run the following SQL in the Supabase SQL Editor.
+
+create table tasks (
   id bigint generated always as identity primary key,
   title text not null,
   description text,
-  urgency text not null default 'L3',
-  status text not null default 'Open',
+  status text not null default 'Planned',
   user_id uuid references auth.users not null default auth.uid(),
   created_at timestamp with time zone default now()
 );
 
--- Enable Security
-alter table tickets enable row level security;
+-- Enable Row Level Security
+alter table tasks enable row level security;
 
--- Policy: Users only see their own data
-create policy "Users can only access their own tasks" 
-on tickets for all 
+-- Policy: Users can only access their own tasks
+create policy "Users can only access their own tasks"
+on tasks
+for all
 using (auth.uid() = user_id);
-2. Backend SetupBashcd backend
+⚙️ Setup & Installation
+Prerequisites
+Node.js (v18 or higher)
+A Supabase account
+A Supabase project with Google Authentication enabled
+1️⃣ Clone the Repository
+git clone https://github.com/your-username/task-manager.git
+cd task-manager
+2️⃣ Backend Setup
+cd backend
 npm install
-# Create a .env file with:
-# SUPABASE_URL=your_supabase_project_url
-# SUPABASE_KEY=your_supabase_anon_key
-node server.js
-3. Frontend SetupBashcd frontend
-npm install
-# Create a .env file with:
-# VITE_SUPABASE_URL=your_supabase_project_url
-# VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-# VITE_API_URL=http://localhost:5000/api
+Create .env
+SUPABASE_URL=your_supabase_project_url
+SUPABASE_KEY=your_supabase_anon_key
+PORT=5000
+Start Backend Server
 npm run dev
-🌐 API EndpointsMethodEndpointDescriptionGET/api/tasksFetch all user-specific tasksPOST/api/tasksCreate a new taskPUT/api/tasks/:idUpdate status/priority (Escalation)📜 LicenseDistributed under the MIT License."""with open("README.md", "w") as f:f.write(readme_content)Your `README.md` file is ready.
 
-[file-tag: code-generated-file-0-1779173098935129454]
+Server runs at:
 
-### 💡 How to use this:
-1. Open the file and copy the content.
-2. Go to your **GitHub repository** in your browser.
-3. Click **Add file** > **Create new file**.
-4. Name it `README.md` and paste the content.
-5. Commit the changes.
+http://localhost:5000
+3️⃣ Frontend Setup
+cd frontend
+npm install
+Create .env
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+VITE_API_URL=http://localhost:5000/api
+Start Frontend Development Server
+npm run dev
 
-### What makes this README professional:
-* **Visual Hierarchy**: Uses clear headings and icons to separate sections.
-* **Folder Mapping**: Explains the logic of your directory structure, which is a common question in technical interviews.
-* **Database Setup**: Provides the exact SQL code so others can replicate your Supabase environment instantly.
-* **Environment Variables**: Explicitly lists what needs to go in the `.env` files
+Frontend runs at:
+
+http://localhost:5173
+🔌 API Endpoints
+Method	Endpoint	Description
+GET	/api/tasks	Fetch all tasks for the user
+POST	/api/tasks	Create a new task
+PUT	/api/tasks/:id	Update task status
+DELETE	/api/tasks/:id	Delete a task (optional)
+📦 Sample API Payloads
+Create Task
+{
+  "title": "Complete project documentation",
+  "description": "Write a professional README",
+  "status": "Planned"
+}
+Update Task Status
+{
+  "status": "Completed"
+}
+🔐 Authentication Flow
+User signs in using Google.
+Supabase authenticates the user.
+Frontend receives the session.
+Backend uses the authenticated user context.
+Row Level Security ensures users can only access their own tasks.
+🧪 Testing the API
+
+Use tools such as:
+
+Postman
+Thunder Client
+Insomnia
+
+Recommended tests:
+
+Create a task
+Retrieve all tasks
+Update task status
+Verify user-specific access
+🚀 Deployment
+Frontend
+Vercel
+Netlify
+Backend
+Render
+Railway
+Database & Authentication
+Supabase
+📚 What This Project Demonstrates
+Full-stack application architecture
+REST API development
+Authentication and authorization
+CRUD operations
+Environment variable management
+Database security with RLS
+Modern React development with Vite
+📝 License
+
+Distributed under the MIT License.
