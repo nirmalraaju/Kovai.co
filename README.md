@@ -2,6 +2,8 @@
 
 A full-stack Task Management application built with **React (Vite)**, **Express.js**, and **Supabase**. Users can authenticate with Google, create tasks, view their personal task list, and update task status through a clean and intuitive interface.
 
+Vercel: https://kovai-co-frontend.vercel.app/
+
 ---
 
 ## ✨ Features
